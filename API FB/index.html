@@ -105,30 +105,32 @@ function readCookie(name) {
 	return '';
 }
  
+  FB.login(function(response) { 
+  alert(response.authResponse.accessToken);
+     }, {perms:'read_stream,publish_stream,offline_access'}
+	);
+ 
   // Here we run a very simple test of the Graph API after login is
   // successful.  See statusChangeCallback() for when this call is made.
   function testAPI() {
     console.log('Welcome!  Fetching your information.... ');
-
-	var name =   document.getElementById("name");
+	
+	var access_token = FB.getAuthResponse()['accessToken'];
+	//console.log('Access Token = '+ access_token);
 	
 	FB.api('/me', function(response) {
 	  	  
-		//console.log('Successful login for: ' + response.name);
+		console.log('Successful login for: ' + response.name);
 		document.getElementById('status').innerHTML =
         'Thanks for logging in, ' + response.name + '!';
 		
 		document.getElementById('name').value = response.name;	
-		document.FBHaveName = true;
-		//var name = response.name;
-		//writeCookie("fb_name",name,1);		
+		document.FBHaveName = true;	
 			
     });
 	FB.api("/me/picture?width=180&height=180",   function(response) {
 		document.getElementById('photo').value = response.data.url;
-		document.FBHavePhoto = true;
-		//var photo = response.data.url;
-		//writeCookie("fb_photo",photo,1);		
+		document.FBHavePhoto = true;	
 	});	
 	
 	itv = setInterval(function(){
@@ -137,16 +139,8 @@ function readCookie(name) {
 			clearInterval(itv);
 			var name =   document.getElementById("name").value;
 			var photo =   document.getElementById("photo").value; 
-			var json = '{ "user" : [{ "name": '+name+' , "url_photo": '+photo+' }]}';
+			var json = '{ "user" : [{ "name": '+name+' , "url_photo": '+photo+', "token_access": '+access_token+' }]}';
 			
-			//console.log(json);	
-			/*	
-			var cookie1 = readCookie('fb_name')
-			var cookie2 = readCookie('fb_photo')
-
-			alert(cookie1)			
-			alert(cookie2)	
-			*/
 			writeCookie("fb_JSON",json,1);	
 			var cookieJSON = readCookie('fb_JSON')
 			console.log(cookieJSON);			
