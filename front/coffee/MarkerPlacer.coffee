@@ -6,12 +6,15 @@ class MarkerPlacer
     window.infoWindow = new google.maps.InfoWindow
       content : "<div id='#{MarkerPlacer.mapInfowindowSelector}'></div>"
 
+    $("body").on "click", ".contact-shelter", () ->
+      console.log "TODO: ouvrir chat"
+
   addMarkers: (data) ->
     markers = []
     markers = markers.concat(@getShelters(data.shelters))
     markers = markers.concat(@getInjuredPeople(data.injured))
     markers = markers.concat(@getUnsafe(data.unsafe))
-    debugger
+
     mapParams =
       clear:
           name: [
@@ -27,7 +30,6 @@ class MarkerPlacer
 
   getInjuredPeople: (data) ->
       # set injured people in marker formats
-      debugger
       if data
           injured = data.map (x) ->
               latLng: [x.lat, x.lng]
@@ -43,7 +45,6 @@ class MarkerPlacer
 
     getUnsafe: (data) ->
         # set people who needs help in marker formats
-        debugger
         if data
             unsafe = data.map (x) ->
                 latLng: [x.lat, x.lng]
@@ -64,10 +65,29 @@ class MarkerPlacer
               latLng: [x.lat, x.lng]
               options:
                   icon: "./imgs/shelter.png"
+              data:
+                options:
+                  content: "
+                    <div class='infowindow shelter'>
+                      <span class='informations'>#{x.addr}</span>
+                      <span class='contact-shelter'>Contacter</span>
+                    </div>"
               tag: "shelter"
               events:
                   click: (marker, events, context) ->
-                      console.log "Click shelter"
+                    map = $(this).gmap3("get")
+                    infowindow = $(this).gmap3({get:{name:"infowindow"}})
+
+                    if infowindow
+                      infowindow.open map, marker
+                      infowindow.setContent context.data.options.content
+                    else
+                      $(this).gmap3
+                        infowindow:
+                          anchor:marker
+                          options:
+                            content: context.data.options.content
+
       else
           shelters = []
       return shelters

@@ -9,6 +9,9 @@ MarkerPlacer = (function() {
     window.infoWindow = new google.maps.InfoWindow({
       content: "<div id='" + MarkerPlacer.mapInfowindowSelector + "'></div>"
     });
+    $("body").on("click", ".contact-shelter", function() {
+      return console.log("TODO: ouvrir chat");
+    });
   }
 
   MarkerPlacer.prototype.addMarkers = function(data) {
@@ -17,7 +20,6 @@ MarkerPlacer = (function() {
     markers = markers.concat(this.getShelters(data.shelters));
     markers = markers.concat(this.getInjuredPeople(data.injured));
     markers = markers.concat(this.getUnsafe(data.unsafe));
-    debugger;
     mapParams = {
       clear: {
         name: ["shelter", "injured", "unsafe", "infowindow"]
@@ -31,7 +33,6 @@ MarkerPlacer = (function() {
   };
 
   MarkerPlacer.prototype.getInjuredPeople = function(data) {
-    debugger;
     var injured;
     if (data) {
       injured = data.map(function(x) {
@@ -55,7 +56,6 @@ MarkerPlacer = (function() {
   };
 
   MarkerPlacer.prototype.getUnsafe = function(data) {
-    debugger;
     var unsafe;
     if (data) {
       unsafe = data.map(function(x) {
@@ -87,10 +87,34 @@ MarkerPlacer = (function() {
           options: {
             icon: "./imgs/shelter.png"
           },
+          data: {
+            options: {
+              content: "<div class='infowindow shelter'> <span class='informations'>" + x.addr + "</span> <span class='contact-shelter'>Contacter</span> </div>"
+            }
+          },
           tag: "shelter",
           events: {
             click: function(marker, events, context) {
-              return console.log("Click shelter");
+              var infowindow, map;
+              map = $(this).gmap3("get");
+              infowindow = $(this).gmap3({
+                get: {
+                  name: "infowindow"
+                }
+              });
+              if (infowindow) {
+                infowindow.open(map, marker);
+                return infowindow.setContent(context.data.options.content);
+              } else {
+                return $(this).gmap3({
+                  infowindow: {
+                    anchor: marker,
+                    options: {
+                      content: context.data.options.content
+                    }
+                  }
+                });
+              }
             }
           }
         };
