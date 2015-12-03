@@ -3,6 +3,9 @@ body{
 }
 
 
+body{
+  overflow: hidden;
+}
 #spanForm{
   margin-left: auto;
   margin-right: auto;
