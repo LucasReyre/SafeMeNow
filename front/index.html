@@ -19,10 +19,7 @@
   <script src="http://code.highcharts.com/highcharts.js"></script>
   <script src="http://code.highcharts.com/modules/exporting.js"></script>
   <script type="text/javascript" src="js/gmap3.min.js"></script>
-  <script type="text/javascript" src="coffee/js/gmapZoner.js"></script>
-  <script type="text/javascript" src="coffee/js/zoneColorEnum.js"></script>
-  <script type="text/javascript" src="coffee/js/zone.js"></script>
-  <script type="text/javascript" src="coffee/js/city.js"></script>
+  <script type="text/javascript" src="coffee/js/MarkerPlacer.js"></script>
 </head>
 
 <body>
@@ -44,8 +41,7 @@
           <span class="bar"></span>
           <span class="bar"></span>
         </a>
-        <h3 id="AppName">Ec
-          <img id="logo" src="img/logo.png">dit</h3>
+        <h3 id="AppName">SafeMeNow</h3>
       </div>
       <div class="content">
         <div id="map"></div>
@@ -74,13 +70,9 @@
       });
     });
 
-    $.getJSON('./data/unesco_environnement.json', function(data) {
-      document.fulldata = data
-    });
-
     function initMap() {
 
-      if (!google.maps.Polygon.prototype.getBounds) {
+      /*if (!google.maps.Polygon.prototype.getBounds) {
         google.maps.Polygon.prototype.getBounds = function() {
           var bounds = new google.maps.LatLngBounds();
           this.getPath().forEach(function(element, index) {
@@ -88,20 +80,65 @@
           });
           return bounds;
         }
-      }
+      }*/
 
       $(function() {
-        gmap = new GmapZoner("#map");
-        gmap.initMap();
-        var zones = []
-        var i, zone;
-        for (i = 0, len = document.fulldata.indices_zone.length; i < len; i++) {
-          zone = document.fulldata.indices_zone[i];
-          zones.push(new Zone(zone));
-        }
-        var city = new City({"id_ville": "1", "zones": zones });
-        gmap.drawCity(city);
-        gmap.setMultipleZone(zones);
+        markerPlacer = new MarkerPlacer("#map");
+        shelterStrubs = [
+          {
+            "lat": "48.890401000000004",
+            "lng": "2.169281"
+          },
+          {
+            "lat": "48.890401000000004",
+            "lng": "2.1782809999999997"
+          },
+          {
+            "lat": "48.895801000000006",
+            "lng": "2.1782809999999997"
+          },
+          {
+            "lat": "48.895801000000006",
+            "lng": "2.169281"
+          }]
+        injuredStrubs = [ {
+            "lat": "48.90120100000001",
+            "lng": "2.1782809999999997"
+          }, {
+            "lat": "48.90120100000001",
+            "lng": "2.169281"
+          }]
+        unsafeStrubs = [ {
+            "lat": "48.890401000000004",
+            "lng": "2.1872809999999996"
+          }, {
+            "lat": "48.895801000000006",
+            "lng": "2.1872809999999996"
+          }, {
+            "lat": "48.895801000000006",
+            "lng": "2.1782809999999997"
+          }, {
+            "lat": "48.895801000000006",
+            "lng": "2.1782809999999997"
+          }, {
+            "lat": "48.895801000000006",
+            "lng": "2.1872809999999996"
+          },{
+            "lat": "48.90120100000001",
+            "lng": "2.1872809999999996"
+          }, {
+            "lat": "48.90120100000001",
+            "lng": "2.1782809999999997"
+          }, {
+            "lat": "48.90120100000001",
+            "lng": "2.1782809999999997"
+          }]
+        markerPlacer.addMarkers(
+          {
+            shelters : shelterStrubs,
+            injured: injuredStrubs,
+            unsafe: unsafeStrubs
+          })
       });
     };
   </script>
