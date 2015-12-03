@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="../css/bootstrap-responsive.css">
+<link rel="stylesheet" type="text/css" href="../css/form.css">
+
+<script>
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        console.log("Geolocation is not supported by this browser.");
+    }
+
+    function showPosition(position) {
+      console.log("Latitude: " + position.coords.latitude +
+      "Longitude: " + position.coords.longitude);
+    }
+
+
+</script>
+</head>
+
+
+<body>
+
+  <div class="row show-grid" id="spanForm">
+      <div class="span9"  data-original-title="" title="">
+          <input class="input-xlarge" id="adresse" type="text" placeholder=".input-xlarge">
+      </div>
+
+      <div class="span9" data-original-title="" title="">
+            <input class="input-large" id="ville" type="text" placeholder=".input-large">
+      </div>
+
+      <div class="span9" data-original-title="" title="">
+        <select id="placesDispo">
+          <option value="1">1</option>
+          <option value="2" >2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="5+">5+</option>
+          <option>5</option>
+        </select>
+      </div>
+      <div class="span9" data-original-title="" title="">
+      <span onclick="getLocation();return false" class="svg-icon flat-line" id="line-location"><svg class="flat_icon" xmlns="http://www.w3.org/2000/svg" width="100px" height="100px" viewBox="0 0 100 100"><path class="circle" d="M50,2.125c26.441,0,47.875,21.434,47.875,47.875c0,26.441-21.434,47.875-47.875,47.875C17.857,97.875,2.125,76.441,2.125,50C2.125,23.559,23.559,2.125,50,2.125z"></path><g class="icon"><path class="base" d="M50,19.53c13.945,0,25.248,11.213,25.248,25.045C75.248,60.437,54.207,80.47,50,80.47c-4.208,0-25.248-20.033-25.248-35.895C24.752,30.743,36.056,19.53,50,19.53z"></path><path class="inner" d="M50,30.488c8.174,0,14.8,6.625,14.8,14.799c0,8.173-6.626,14.8-14.8,14.8s-14.8-6.626-14.8-14.799C35.2,37.114,41.826,30.488,50,30.488z"></path></g></svg></span>
+    </div>
+  </div>
+
+
+  <p>Click the button to get your coordinates.</p>
+
+<button onclick="getLocation()">Try It</button>
+
+<p id="demo"></p>
+
+<script>
+var x = document.getElementById("demo");
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
+
+function showPosition(position) {
+    x.innerHTML = "Latitude: " + position.coords.latitude +
+    "<br>Longitude: " + position.coords.longitude;
+}
+</script>
+
+</body>
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>
