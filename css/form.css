@@ -1,0 +1,24 @@
+
+#spanForm{
+  margin-left: auto;
+  margin-right: auto;
+  width: 25em;
+}
+
+#line-location{
+  display: inline-block;
+  margin-left: 9em;
+}
+#adresse{
+
+}
+
+#ville{
+
+}
+#placesDispo{
+
+}
+#line-location .circle { fill: #4890A8 }
+#line-location .base { fill: #B6351B }
+#line-location .inner { fill: #7E2412 }
