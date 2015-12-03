@@ -1,3 +1,7 @@
+body{
+  overflow: hidden;
+}
+
 
 #spanForm{
   margin-left: auto;
