@@ -6,6 +6,14 @@ body, html {
     font-weight: 100;
 }
 
+.blurified{
+  filter: blur(3px);
+  -webkit-filter: blur(3px);
+  -moz-filter: blur(3px);
+  -o-filter: blur(3px);
+  -ms-filter: blur(3px);
+}
+
 #AppName{
   color: white;
   margin: auto;
