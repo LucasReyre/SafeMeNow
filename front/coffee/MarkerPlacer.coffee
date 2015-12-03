@@ -34,7 +34,7 @@ class MarkerPlacer
           injured = data.map (x) ->
               latLng: [x.lat, x.lng]
               options:
-                  icon: "./imgs/injured.png"
+                  icon: "./img/injured.png"
               tag: "injured"
               events:
                   click: (marker, events, context) ->
@@ -49,7 +49,7 @@ class MarkerPlacer
             unsafe = data.map (x) ->
                 latLng: [x.lat, x.lng]
                 options:
-                    icon: "./imgs/unsafe.png"
+                    icon: "./img/unsafe.png"
                 tag: "unsafe"
                 events:
                     click: (marker, events, context) ->
@@ -64,7 +64,7 @@ class MarkerPlacer
           shelters = data.map (x) ->
               latLng: [x.lat, x.lng]
               options:
-                  icon: "./imgs/shelter.png"
+                  icon: "./img/shelter.png"
               data:
                 options:
                   content: "

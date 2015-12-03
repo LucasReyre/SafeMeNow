@@ -39,7 +39,7 @@ MarkerPlacer = (function() {
         return {
           latLng: [x.lat, x.lng],
           options: {
-            icon: "./imgs/injured.png"
+            icon: "./img/injured.png"
           },
           tag: "injured",
           events: {
@@ -62,7 +62,7 @@ MarkerPlacer = (function() {
         return {
           latLng: [x.lat, x.lng],
           options: {
-            icon: "./imgs/unsafe.png"
+            icon: "./img/unsafe.png"
           },
           tag: "unsafe",
           events: {
@@ -85,7 +85,7 @@ MarkerPlacer = (function() {
         return {
           latLng: [x.lat, x.lng],
           options: {
-            icon: "./imgs/shelter.png"
+            icon: "./img/shelter.png"
           },
           data: {
             options: {
