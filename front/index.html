@@ -1,0 +1,112 @@
+<html>
+
+<head>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+  <meta charset="utf-8">
+
+  <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="css/general.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script>
+    $(document).bind('mobileinit', function() {
+      $.mobile.changePage.defaults.changeHash = false;
+      $.mobile.hashListeningEnabled = false;
+      $.mobile.pushStateEnabled = false;
+    });
+  </script>
+
+  <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+  <script src="http://code.highcharts.com/highcharts.js"></script>
+  <script src="http://code.highcharts.com/modules/exporting.js"></script>
+  <script type="text/javascript" src="js/gmap3.min.js"></script>
+  <script type="text/javascript" src="coffee/js/gmapZoner.js"></script>
+  <script type="text/javascript" src="coffee/js/zoneColorEnum.js"></script>
+  <script type="text/javascript" src="coffee/js/zone.js"></script>
+  <script type="text/javascript" src="coffee/js/city.js"></script>
+</head>
+
+<body>
+
+  <div class="container">
+    <div id="sidebar">
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Explore</a></li>
+        <li><a href="#">Users</a></li>
+        <li><a href="#">Sign Out</a></li>
+      </ul>
+    </div>
+    <div class="main-content">
+      <div id="header">
+        <div class="swipe-area"></div>
+        <a href="#" data-toggle=".container" id="sidebar-toggle">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </a>
+        <h3 id="AppName">Ec
+          <img id="logo" src="img/logo.png">dit</h3>
+      </div>
+      <div class="content">
+        <div id="map"></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    $(document).ready(function() {
+      $("[data-toggle]").click(function() {
+        var toggle_el = $(this).data("toggle");
+        $(toggle_el).toggleClass("open-sidebar");
+      });
+
+
+      $(".swipe-area").swipe({
+        swipeStatus: function(event, phase, direction, distance, duration, fingers) {
+          if (phase == "move" && direction == "right") {
+            $(".container").addClass("open-sidebar");
+            return false;
+          }
+          if (phase == "move" && direction == "left") {
+            $(".container").removeClass("open-sidebar");
+            return false;
+          }
+        }
+      });
+    });
+
+    $.getJSON('./data/unesco_environnement.json', function(data) {
+      document.fulldata = data
+    });
+
+    function initMap() {
+
+      if (!google.maps.Polygon.prototype.getBounds) {
+        google.maps.Polygon.prototype.getBounds = function() {
+          var bounds = new google.maps.LatLngBounds();
+          this.getPath().forEach(function(element, index) {
+            bounds.extend(element)
+          });
+          return bounds;
+        }
+      }
+
+      $(function() {
+        gmap = new GmapZoner("#map");
+        gmap.initMap();
+        var zones = []
+        var i, zone;
+        for (i = 0, len = document.fulldata.indices_zone.length; i < len; i++) {
+          zone = document.fulldata.indices_zone[i];
+          zones.push(new Zone(zone));
+        }
+        var city = new City({"id_ville": "1", "zones": zones });
+        gmap.drawCity(city);
+        gmap.setMultipleZone(zones);
+      });
+    };
+  </script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA4HPE3t2-mtHsLIoqdfi6O_4yLkUoGklM&signed_in=true&callback=initMap"></script>
+  </div>
+</body>
+
+</html>
