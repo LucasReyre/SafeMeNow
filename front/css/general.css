@@ -69,6 +69,8 @@ body, html {
   right: 10px;
   padding: 5px;
   cursor: pointer;
+  font-family: sans-serif;
+  font-weight: 600;
 }
 
 .welcome-choice .choice .choiceBlock span
@@ -185,6 +187,23 @@ width: 100%;
     padding: 10px 7px;
     float: left;
 }
+
+.main-content #action-toggle {
+    background: #DF314D;
+    border-radius: 3px;
+    display: block;
+    position: relative;
+    padding: 4px 5px;
+    float: left;
+    position: absolute;
+    top: 46px;
+}
+
+.main-content #action-toggle img {
+  width: 22px;
+  height: 26px;
+}
+
 .main-content #sidebar-toggle .bar{
      display: block;
     width: 18px;
