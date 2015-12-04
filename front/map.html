@@ -23,8 +23,29 @@
 </head>
 
 <body>
-
-  <div class="container">
+  <div class="welcome-choice">
+      <div class="block"></div>
+      <div class="choice">
+        <div class="ImSafe choiceBlock">
+          <img src="./img/safeBig.png"></img>
+          <span>Je suis en sécurité</span>
+        </div>
+        <div class="ImUnSafe choiceBlock">
+            <img src="./img/unsafeBig.png"></img>
+            <span>J'ai besoin d'un abri</span>
+        </div>
+        <div class="ImInjured choiceBlock">
+            <img src="./img/injuredBig.png"></img>
+            <span>Ma vie est en danger</span>
+        </div>
+        <div class="addShelter choiceBlock">
+          <img src="./img/shelterBig.png"></img>
+          <span>J'ai un abri à proposer</span>
+        </div>
+        <span class="close-welcome-choise">x</span>
+      </div>
+  </div>
+  <div class="container blur">
     <div id="sidebar">
       <ul>
         <li><a href="#">Home</a></li>
@@ -40,6 +61,9 @@
           <span class="bar"></span>
           <span class="bar"></span>
           <span class="bar"></span>
+        </a>
+        <a href="#" id="action-toggle">
+          <img src="./img/menu.png"></img>
         </a>
         <h3 id="AppName">SaveMeNow</h3>
       </div>
@@ -68,6 +92,12 @@
           }
         }
       });
+
+      $(".close-welcome-choise, #action-toggle").click(function() {
+        $(".welcome-choice").toggle();
+        $(".container").toggleClass("blur");
+      });
+
     });
 
     function initMap() {
@@ -143,9 +173,6 @@
             injured: injuredStrubs,
             unsafe: unsafeStrubs
           })
-        $(".welcome-choice").show();
-        $("#map").addClass("blurified");
-
       });
     };
   </script>

@@ -6,7 +6,7 @@ function getConnection() {
     try {
         $db_username = "root";
         $db_password = "";
-        $conn = new PDO('mysql:host=localhost;dbname=upopulse', $db_username, $db_password);
+        $conn = new PDO('mysql:host=localhost;dbname=savemenow', $db_username, $db_password);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         
     } catch(PDOException $e) {
