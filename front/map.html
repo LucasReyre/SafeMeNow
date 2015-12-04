@@ -13,15 +13,11 @@
       $.mobile.hashListeningEnabled = false;
       $.mobile.pushStateEnabled = false;
     });
-	
-	if (true){
-	console.log('ok');
-  window.addEventListener('keydown', function(e) {
-    if (e.keyCode == 27)
-      e.preventDefault();
-  })
-}
 
+    $(window).on('beforeunload', function(){
+      console.log('beforeunload ')
+        socket.close();
+    });
   </script>
 
   <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
@@ -71,7 +67,7 @@
                 $('#message').val('').focus(); // Vide la zone de Chat et remet le focus dessus
                 return false; // Permet de bloquer l'envoi "classique" du formulaire
             });
-			
+
 			function createMessage(pseudo, message) {
 				if(document.getElementById(pseudo))
 				{
@@ -91,10 +87,10 @@
             function insereMessage(pseudo, message) {
 				$('#'+pseudo).prepend('<p><strong>' + pseudo + '</strong> ' + message + '</p>');
             }
-			
+
 			function updateConvers(){
 				var convers = document.getElementsByClassName("conv");
-				
+
 				for (var i=0; i < convers.length; i++) {
 				  convers[i].onclick = function(){
 				   if(document.getElementById($(this).attr('id')).style.display != 'none')
@@ -104,7 +100,7 @@
 				  }
 				}
 			}
-			
+
         </script>
 
 
@@ -115,15 +111,15 @@
         </form>
 
         <section id="zone_chat" style="margin-left: 25%; height: 100%;">
-            
+
         </section>
-		
+
 		<section id="zone_2" style="position: absolute; top: 0px; left: 0px; width: 25%; height: 100vh; background-color: yellow;">
-            
+
         </section>
-		
-		
-		
+
+
+
   <div class="welcome-choice">
       <div class="block"></div>
       <div class="choice">

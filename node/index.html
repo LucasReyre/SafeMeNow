@@ -38,7 +38,7 @@
                 $('#message').val('').focus(); // Vide la zone de Chat et remet le focus dessus
                 return false; // Permet de bloquer l'envoi "classique" du formulaire
             });
-			
+
 			function createMessage(pseudo, message) {
 				if(document.getElementById(pseudo))
 				{
@@ -58,10 +58,10 @@
             function insereMessage(pseudo, message) {
 				$('#'+pseudo).prepend('<p><strong>' + pseudo + '</strong> ' + message + '</p>');
             }
-			
+
 			function updateConvers(){
 				var convers = document.getElementsByClassName("conv");
-				
+
 				for (var i=0; i < convers.length; i++) {
 				  convers[i].onclick = function(){
 				   if(document.getElementById($(this).attr('id')).style.display != 'none')
@@ -71,8 +71,7 @@
 				  }
 				}
 			}
-			
+
         </script>
     </body>
 </html>
-
