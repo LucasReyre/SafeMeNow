@@ -3,10 +3,15 @@
 
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
-<link rel="stylesheet" type="text/css" href="../css/bootstrap-responsive.css">
-<link rel="stylesheet" type="text/css" href="../css/form.css">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.css">
+<link rel="stylesheet" type="text/css" href="css/form.css">
+<link rel="stylesheet" type="text/css" href="css/general.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+//Requète pour place auto complete
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA4HPE3t2-mtHsLIoqdfi6O_4yLkUoGklM&libraries=places&callback=initAutocomplete"
+     async defer></script>
 <script>
 
 function getLocation() {
@@ -22,11 +27,55 @@ function showPosition(position) {
     "<br>Longitude: " + position.coords.longitude;
 }
 
+function initAutocomplete() {
+
+  // Create the search box and link it to the UI element.
+  var input = document.getElementById('adresse');
+  var searchBox = new google.maps.places.SearchBox(input);
+
+  // [START region_getplaces]
+  // Listen for the event fired when the user selects a prediction and retrieve
+  // more details for that place.
+  searchBox.addListener('places_changed', function() {
+    var places = searchBox.getPlaces();
+
+    if (places.length == 0) {
+      return;
+    }
+  });
+  // [END region_getplaces]
+}
+
 function submit(){
-  var adresse = $( "#adresse" ).value;
-  var ville = $( "#ville" ).value;
-  var placesDispo = $( "#placesDispo" ).value;
-  var autre = $( "#autres" ).value
+  var adresse = $( "#adresse" ).val();
+  var placesDispo = $( "#placesDispo" ).val();
+  var autre = $( "#autres" ).val();
+  var error = 0;
+
+  if (adresse == "") {
+     document.getElementById("divAdresse").className = "control-group error";
+     error+=1;
+  }else {
+    document.getElementById("divVille").className = "";
+  }
+
+  if (error>0) {
+    return
+  }
+
+  info = [];
+  info["adresse"]=adresse;
+  info["placesDispo"]=placesDispo;
+  info["autres"]=autres;
+
+  $.ajax({
+   type: "POST",
+   data: {data:info},
+   url: "index.php",
+   success: function(msg){
+     console.log(msg);
+   }
+  });
 
 }
 
@@ -38,7 +87,6 @@ function submit(){
 <body>
 
   <div id="header">
-    <div class="swipe-area"></div>
     <a href="#" data-toggle=".container" id="sidebar-toggle">
       <span class="bar"></span>
       <span class="bar"></span>
@@ -48,15 +96,11 @@ function submit(){
   </div>
 
   <div class="row show-grid" id="spanForm">
-      <div class="span9"  data-original-title="" title="">
-          <input class="input-xlarge" id="adresse" type="text" placeholder="Adresse">
-      </div>
 
-      <div class="span9" data-original-title="" title="">
-            <input class="input-large" id="ville" type="text" placeholder="Ville">
-      </div>
+    <div id="divAdresse" class="">
+          <input class="input-xlarge " id="adresse" type="text" placeholder="Adresse"></div>
 
-      <div class="span9" data-original-title="" title="">
+
         <select id="placesDispo">
           <option value="1">1</option>
           <option value="2" >2</option>
@@ -66,20 +110,12 @@ function submit(){
           <option value="5+">5+</option>
           <option>5</option>
         </select>
-      </div>
 
+      <textarea placeholder="Détails d'accés " rows="3" id="autres"></textarea>
 
-    <div class="span9" data-original-title="" title="">
-      <textarea placeholder="Autres" rows="3" id="autres"></textarea>
-    </div>
+      <div onclick="getLocation();return false" id="location"></div>
 
-    <div class="span9" data-original-title="" title="">
-    <span  onclick="getLocation();return false" class="svg-icon flat-line" id="line-location"><svg class="flat_icon" xmlns="http://www.w3.org/2000/svg" width="100px" height="100px" viewBox="0 0 100 100"><path class="circle" d="M50,2.125c26.441,0,47.875,21.434,47.875,47.875c0,26.441-21.434,47.875-47.875,47.875C17.857,97.875,2.125,76.441,2.125,50C2.125,23.559,23.559,2.125,50,2.125z"></path><g class="icon"><path class="base" d="M50,19.53c13.945,0,25.248,11.213,25.248,25.045C75.248,60.437,54.207,80.47,50,80.47c-4.208,0-25.248-20.033-25.248-35.895C24.752,30.743,36.056,19.53,50,19.53z"></path><path class="inner" d="M50,30.488c8.174,0,14.8,6.625,14.8,14.799c0,8.173-6.626,14.8-14.8,14.8s-14.8-6.626-14.8-14.799C35.2,37.114,41.826,30.488,50,30.488z"></path></g></svg></span>
-  </div>
-
-    <div class="span9" data-original-title="" title="">
-          <button class="btn btn-large btn-primary" id="submit" type="button" onclick="submit();">Valider</button>
-    </div>
+      <button class="btn btn-large btn-primary" id="submit" type="button" onclick="submit();">Valider</button>
 
   </div>
 

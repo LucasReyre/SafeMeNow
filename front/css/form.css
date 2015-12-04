@@ -2,28 +2,52 @@ body{
   overflow: hidden;
 }
 
-
-body{
-  overflow: hidden;
-}
 #spanForm{
   margin-left: auto;
   margin-right: auto;
+  margin-top: 2em;
   width: 25em;
 }
 
 #line-location{
   display: inline-block;
-  margin-left: 9em;
+  margin-left: 6em;
 }
 #adresse{
+margin-left: 8%;
+width: 60%;
+}
 
+#location{
+  background-image:url('../img/shelterBig.png');
+  height: 300px;
+  width: 216px;
+  max-height: 195px;
+  max-width: 142px;
+  margin-left: 18%;
+  background-size: contain;
+
+}
+
+#location:hover{
+  background-image:url('../img/shelter.png');
 }
 
 #ville{
-
+margin-left: 8%;
+width: 60%;
 }
 #placesDispo{
+margin-left: 8%;
+width: 60%;
+}
+
+#autres{
+  margin-left: 8%;
+}
+#submit{
+  margin-top: 2em;
+  margin-left: 24%;
 
 }
 #line-location .circle { fill: #4890A8 }

@@ -23,8 +23,29 @@
 </head>
 
 <body>
-
-  <div class="container">
+  <div class="welcome-choice">
+      <div class="block"></div>
+      <div class="choice">
+        <div class="ImSafe choiceBlock">
+          <img src="./img/safeBig.png"></img>
+          <span>Je suis en sécurité</span>
+        </div>
+        <div class="ImUnSafe choiceBlock">
+            <img src="./img/unsafeBig.png"></img>
+            <span>J'ai besoin d'un abri</span>
+        </div>
+        <div class="ImInjured choiceBlock">
+            <img src="./img/injuredBig.png"></img>
+            <span>Ma vie est en danger</span>
+        </div>
+        <div class="addShelter choiceBlock">
+          <img src="./img/shelterBig.png"></img>
+          <span>J'ai un abri à proposer</span>
+        </div>
+        <span class="close-welcome-choise">x</span>
+      </div>
+  </div>
+  <div class="container blur">
     <div id="sidebar">
       <ul>
         <li><a href="#">Home</a></li>
@@ -41,7 +62,10 @@
           <span class="bar"></span>
           <span class="bar"></span>
         </a>
-        <h3 id="AppName">SafeMeNow</h3>
+        <a href="#" id="action-toggle">
+          <img src="./img/menu.png"></img>
+        </a>
+        <h3 id="AppName">SaveMeNow</h3>
       </div>
       <div class="content">
         <div id="map"></div>
@@ -68,6 +92,12 @@
           }
         }
       });
+
+      $(".close-welcome-choise, #action-toggle").click(function() {
+        $(".welcome-choice").toggle();
+        $(".container").toggleClass("blur");
+      });
+
     });
 
     function initMap() {
@@ -87,19 +117,23 @@
         shelterStrubs = [
           {
             "lat": "48.890401000000004",
-            "lng": "2.169281"
+            "lng": "2.169281",
+            "addr": "Chez Michel"
           },
           {
             "lat": "48.890401000000004",
-            "lng": "2.1782809999999997"
+            "lng": "2.1782809999999997",
+            "addr": "Chez Bao"
           },
           {
             "lat": "48.895801000000006",
-            "lng": "2.1782809999999997"
+            "lng": "2.1782809999999997",
+            "addr": "Chez Jordan"
           },
           {
             "lat": "48.895801000000006",
-            "lng": "2.169281"
+            "lng": "2.169281",
+            "addr": "Chez Lucas"
           }]
         injuredStrubs = [ {
             "lat": "48.90120100000001",
