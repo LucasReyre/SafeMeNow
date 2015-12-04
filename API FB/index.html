@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Facebook API Login JavaScript</title>
+<title>Facebook Login JavaScript Example</title>
 <meta charset="UTF-8">
 </head>
 <body>
@@ -105,11 +105,6 @@ function readCookie(name) {
 	return '';
 }
  
-  FB.login(function(response) { 
-  alert(response.authResponse.accessToken);
-     }, {perms:'read_stream,publish_stream,offline_access'}
-	);
- 
   // Here we run a very simple test of the Graph API after login is
   // successful.  See statusChangeCallback() for when this call is made.
   function testAPI() {
@@ -118,28 +113,30 @@ function readCookie(name) {
 	var access_token = FB.getAuthResponse()['accessToken'];
 	//console.log('Access Token = '+ access_token);
 	
-	FB.api('/me', function(response) {
+	FB.api('/me',{fields: 'last_name, first_name'}, function(response) {
 	  	  
-		console.log('Successful login for: ' + response.name);
+		console.log('Successful login for: ' + response.last_name +' ' + response.first_name);
 		document.getElementById('status').innerHTML =
-        'Thanks for logging in, ' + response.name + '!';
+        'Thanks for logging in, ' + response.last_name +' ' + response.first_name + '!';
 		
-		document.getElementById('name').value = response.name;	
+		document.getElementById('nom').value = response.last_name;	
+		document.getElementById('prenom').value = response.first_name;	
 		document.FBHaveName = true;	
 			
     });
 	FB.api("/me/picture?width=180&height=180",   function(response) {
 		document.getElementById('photo').value = response.data.url;
-		document.FBHavePhoto = true;	
+		document.FBHavePhoto = true;
 	});	
 	
 	itv = setInterval(function(){
 		if(document.FBHavePhoto && document.FBHaveName)
 		{
 			clearInterval(itv);
-			var name =   document.getElementById("name").value;
+			var nom =   document.getElementById("nom").value;
+			var prenom =   document.getElementById("prenom").value; 
 			var photo =   document.getElementById("photo").value; 
-			var json = '{ "user" : [{ "name": '+name+' , "url_photo": '+photo+', "token_access": '+access_token+' }]}';
+			var json = '{ "user" : [{ "nom": '+nom+' , "prenom": '+prenom+', "url_photo": '+photo+', "token_access": '+access_token+' }]}';
 			
 			writeCookie("fb_JSON",json,1);	
 			var cookieJSON = readCookie('fb_JSON')
@@ -161,12 +158,9 @@ function readCookie(name) {
 
 <fb:login-button scope="public_profile,email" onlogin="checkLoginState();"></fb:login-button>
 
-
-<br><br>
-
-
 <div id="status"></div>
-<div id="name"></div>
+<div id="nom"></div>
+<div id="prenom"></div>
 <div id="photo"></div>
 
 </body>
