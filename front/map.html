@@ -62,6 +62,9 @@
           <span class="bar"></span>
           <span class="bar"></span>
         </a>
+        <a href="#" id="action-toggle">
+          <img src="./img/menu.png"></img>
+        </a>
         <h3 id="AppName">SaveMeNow</h3>
       </div>
       <div class="content">
@@ -90,9 +93,9 @@
         }
       });
 
-      $(".close-welcome-choise").click(function() {
-        $(".welcome-choice").hide();
-        $(".container").removeClass("blur");
+      $(".close-welcome-choise, #action-toggle").click(function() {
+        $(".welcome-choice").toggle();
+        $(".container").toggleClass("blur");
       });
 
 // TODO: Remplacer l'url

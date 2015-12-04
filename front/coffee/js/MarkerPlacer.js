@@ -39,7 +39,8 @@ MarkerPlacer = (function() {
         return {
           latLng: [x.lat, x.lng],
           options: {
-            icon: "./img/injured.png"
+            icon: "./img/injured.png",
+            clickable: false
           },
           tag: "injured",
           events: {
@@ -62,7 +63,8 @@ MarkerPlacer = (function() {
         return {
           latLng: [x.lat, x.lng],
           options: {
-            icon: "./img/unsafe.png"
+            icon: "./img/unsafe.png",
+            clickable: false
           },
           tag: "unsafe",
           events: {
