@@ -49,10 +49,6 @@ body, html {
   text-align: center;
 }
 
-.welcome-choice .choice .ImSafe{
-  margin: auto;
-}
-
 .welcome-choice .choice .choiceBlock img
 {
   width: 135px;
@@ -83,17 +79,13 @@ body, html {
   color: white;
   margin: auto;
   text-align: center;
-  line-height: 30px;
+  line-height: 40px;
 }
 
 #header{
   background: #121212;
   height: 40px;
   font-family: 'Roboto', sans-serif;
-}
-
-#header h3{
-  color : #ADADAD;
 }
 
 #logo{
@@ -125,11 +117,12 @@ top: 0;
     z-index: 0;
 }
 #sidebar {
-    background: #DF314D;
+    background: #F7F7F7;
     position: absolute;
     width: 240px;
     height: 100%;
     left: -240px;
+    border-right: 1px solid #A7A7A7;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
 }
@@ -145,10 +138,10 @@ top: 0;
     padding: 15px 20px;
     font-size: 16px;
     font-weight: 100;
-    color: white;
+    color: black;
     text-decoration: none;
     display: block;
-    border-bottom: 1px solid #C9223D;
+    border-bottom: 1px solid #A7A7A7;
     -webkit-transition:  background 0.3s ease-in-out;
     -moz-transition:  background 0.3s ease-in-out;
     -ms-transition:  background 0.3s ease-in-out;
@@ -156,7 +149,7 @@ top: 0;
     transition:  background 0.3s ease-in-out;
 }
 #sidebar ul li:hover a {
-    background: #C9223D;
+    background: #A7A7A7;
 }
 .main-content {
     width: 100%;
@@ -180,16 +173,17 @@ width: 100%;
     line-height: 160%;
 }
 .main-content #sidebar-toggle {
-    background: #DF314D;
+    background: #F7F7F7;
     border-radius: 3px;
     display: block;
     position: relative;
     padding: 10px 7px;
     float: left;
+    border: solid 1px #C1C1C1;
 }
 
 .main-content #action-toggle {
-    background: #DF314D;
+    background: #F7F7F7;
     border-radius: 3px;
     display: block;
     position: relative;
@@ -197,6 +191,7 @@ width: 100%;
     float: left;
     position: absolute;
     top: 46px;
+    border: solid 1px #C1C1C1;
 }
 
 .main-content #action-toggle img {
@@ -209,7 +204,7 @@ width: 100%;
     width: 18px;
     margin-bottom: 3px;
     height: 2px;
-    background-color: #fff;
+    background-color: #000;
     border-radius: 1px;
 }
 .main-content #sidebar-toggle .bar:last-child{
@@ -218,4 +213,31 @@ width: 100%;
 
 #map {
   height: 100%;
+}
+
+@media screen and (max-width: 540px) {
+
+  .welcome-choice .choice {
+    left: calc((100% - 320px) / 2);
+    top: calc((100% - 400px) / 2);
+    width: 300px;
+    height: 400px;
+    padding: 5px;
+  }
+
+  .welcome-choice .choice .choiceBlock {
+    width: 133px;
+  }
+  .welcome-choice .choice .choiceBlock img {
+      width: 135px;
+      height: 170px;
+  }
+
+  .welcome-choice .choice .addShelter, .ImUnSafe  {
+      margin-left: 20px;
+  }
+
+  .welcome-choice .choice .choiceBlock span {
+      font-size: 13px;
+  }
 }
