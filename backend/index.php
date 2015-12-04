@@ -26,7 +26,6 @@ $app->post('/shelter', 'addShelter');
 $app->post('/event', 'addEvent');
 
 // Put
-$app->put('user/:id/:status', 'updateStatus');
 
 $app->run();
 
@@ -44,6 +43,7 @@ function getConnection() {
 }
 
 function addShelters(){
+function addShelter(){
 	global $app;
 	$req = $app->request();
 	$paramShelterAdress = $req->params('ShAdd');
@@ -57,6 +57,8 @@ function addShelters(){
 	if(true){
 		$sql_shelter = "INSERT INTO abri ('abri_id','abri_adresse','abri_ville','abri_place_dispo','abri_latitude','abri_longitude','user_id')
 							VALUES (:abri_id, :abri_adresse, :abri_ville, :abri_place_dispo, :abri_latitude, :abri_longitude, :user_id)";
+		$sql_shelter = "INSERT INTO abri (`abri_id`, `abri_adresse`, `abri_ville`, `abri_place_dispo`, `abri_latitude`, `abri_longitude`, `abri_user_id_fk`) 
+		VALUES (NULL, :abri_adresse, :abri_ville, :abri_longitude, :abri_latitude, :abri_place_dispo, :abri_user_id_fk)";
 		try{
 			$dbCon = getConnection();
 		    $stmt = $dbCon->prepare($sql_shelter);
@@ -66,6 +68,7 @@ function addShelters(){
 		    $stmt->bindParam("abri_latitude", $paramShelterYPosition);
 		    $stmt->bindParam("abri_place_dispo", $paramShelterDispo);
 		    $stmt->bindParam("user_id", $paramIdUser);
+		    $stmt->bindParam("abri_user_id_fk", $paramIdUser);
 		    $stmt->execute();
 		}catch(PDOException $e) {
 	        echo '{"error":{"text":'. $e->getMessage() .'}}'; 
@@ -76,6 +79,7 @@ function addShelters(){
 
 function addEvent(){
 	global $app;
+	$req = $app->request();
 	$paramEventEpicentreLatitude = $req->params('EvEpLat');
 	$paramEventEpicentreLongitude = $req->params('EvEpLon');
 	$paramEventRayon = $req->params('EvRay');
@@ -89,6 +93,9 @@ function addEvent(){
 			'event_rayon','event_valide','event_description','event_statut','event_gravite')
 							VALUES (:event_id, :event_epicentre_latitude, :event_epicentre_longitude, :event_rayon, 
 								:event_valide, :event_description, :event_statut,:event_gravite)";
+		$sql_event = "INSERT INTO event (`event_id`, `event_epicentre_latitude`, `event_epicentre_longitude`, `event_rayon`, `event_valide`, `event_description`, `event_statut`, `event_gravite`) 
+		VALUES (NULL, :event_epicentre_latitude, :event_epicentre_longitude, :event_rayon, :event_valide, :event_description, :event_statut, :event_gravite)";
+		
 		try{
 			$dbCon = getConnection();
 		    $stmt = $dbCon->prepare($sql_shelter);
@@ -100,6 +107,14 @@ function addEvent(){
 		    $stmt->bindParam("event_description", $paramShelterAdress);
 		    $stmt->bindParam("event_statut", $paramShelterAdress);
 		    $stmt->bindParam("event_gravite", $paramShelterAdress);
+		    $stmt = $dbCon->prepare($sql_event);
+		    $stmt->bindParam("event_epicentre_latitude", $paramEventEpicentreLatitude);
+		    $stmt->bindParam("event_epicentre_longitude", $paramEventEpicentreLongitude);
+		    $stmt->bindParam("event_rayon", $paramEventRayon);
+		    $stmt->bindParam("event_valide", $paramEventValide);
+		    $stmt->bindParam("event_description", $paramEventDescription);
+		    $stmt->bindParam("event_statut", $paramEventStatut);
+		    $stmt->bindParam("event_gravite", $paramEventGravite);
 		    $stmt->execute();
 		}catch(PDOException $e) {
 	        echo '{"error":{"text":'. $e->getMessage() .'}}'; 
