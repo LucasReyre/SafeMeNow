@@ -107,6 +107,28 @@ body, html {
     left: 240px;
 }
 
+.infowindow.shelter{
+  max-width: 350px;
+  text-align: center;
+}
+
+.infowindow.shelter .informations{
+  display: block;
+  text-align: initial;
+}
+
+.infowindow.shelter .contact-shelter {
+    padding: 6px 10px;
+    border-radius: 5px;
+    border: 1px solid #a7a7a7;
+    background-color: #F7f7f7;
+    display: inline-block;
+    margin: auto;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+
 .swipe-area {
     position: absolute;
     width: 50px;
