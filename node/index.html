@@ -4,32 +4,6 @@
         <meta charset="utf-8" />
 		<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
         <title>Super Chat temps réel !</title>
-        <style>
-            #zone_chat strong {
-                color: white;
-                background-color: black;
-                padding: 2px;
-            }
-        </style>
-    </head>
- 
-    <body>
-		<?php include('../front/map.php'); ?>
-
-        <form action="/" method="post" id="formulaire_chat" style="margin-left: 25%;">
-            <input type="text" name="message" id="message" placeholder="Votre message..." size="50" autofocus />
-			<input type="text" name="pour" id="pour" placeholder="Pour..." size="20" autofocus />
-            <input type="submit" id="envoi_message" value="Envoyer" />
-        </form>
-
-        <section id="zone_chat" style="margin-left: 25%; height: 100%;">
-            
-        </section>
-		
-		<section id="zone_2" style="position: absolute; top: 0px; left: 0px; width: 25%; height: 100vh; background-color: yellow;">
-            
-        </section>
-
 
         <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
         <script src="/socket.io/socket.io.js"></script>

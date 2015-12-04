@@ -5,9 +5,15 @@ var app = require('express')(),
     fs = require('fs')
 	sockets={};
 
+app.all('/', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+ });	
+	
 // Chargement de la page index.html
 app.get('/', function (req, res) {
-  res.sendfile(__dirname + '/map.html');
+  res.sendfile(__dirname + '/index.html');
 });
 
 io.sockets.on('connection', function (socket, pseudo) {

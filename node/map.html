@@ -20,33 +20,9 @@
   <script src="http://code.highcharts.com/modules/exporting.js"></script>
   <script type="text/javascript" src="js/gmap3.min.js"></script>
   <script type="text/javascript" src="coffee/js/MarkerPlacer.js"></script>
-  
-  <style>
-            #zone_chat strong {
-                color: white;
-                background-color: black;
-                padding: 2px;
-            }
-    </style>
 </head>
 
 <body>
-	
-	<form action="/" method="post" id="formulaire_chat" style="margin-left: 25%;">
-            <input type="text" name="message" id="message" placeholder="Votre message..." size="50" autofocus />
-			<input type="text" name="pour" id="pour" placeholder="Pour..." size="20" autofocus />
-            <input type="submit" id="envoi_message" value="Envoyer" />
-        </form>
-
-        <section id="zone_chat" style="margin-left: 25%; height: 100%;">
-            
-        </section>
-		
-		<section id="zone_2" style="position: absolute; top: 0px; left: 0px; width: 25%; height: 100vh; background-color: yellow;">
-            
-        </section>
-
-
   <div class="welcome-choice">
       <div class="block"></div>
       <div class="choice">
@@ -93,76 +69,6 @@
       </div>
     </div>
   </div>
-  
-  <!--JORDAN-->
-  <script src="/socket.io/socket.io.js"></script>
-        <script>
-
-            // Connexion à socket.io
-            var socket = io.connect('http://localhost:8060');
-
-            // On demande le pseudo, on l'envoie au serveur et on l'affiche dans le titre
-            var pseudo = prompt('Quel est votre pseudo ?');
-            socket.emit('nouveau_client', pseudo);
-            document.title = pseudo + ' - ' + document.title;
-
-            // Quand on reçoit un message, on l'insère dans la page
-            socket.on('message', function(data) {
-				createMessage(data.pseudo, data.message);
-			})
-
-            // Quand un nouveau client se connecte, on affiche l'information
-            socket.on('nouveau_client', function(pseudo) {
-                $('#zone_chat').prepend('<p><em>' + pseudo + ' a rejoint le Chat !</em></p>');
-            })
-
-            // Lorsqu'on envoie le formulaire, on transmet le message et on l'affiche sur la page
-            $('#formulaire_chat').submit(function () {
-                var message = $('#message').val();
-				var pour = $('#pour').val();
-                socket.emit('message', message, pour); // Transmet le message aux autres
-				createMessage(pour, message);
-				//$('#'+pour).prepend('<p><strong></strong> ' + message + '</p>');
-                //insereMessage(pseudo, message); // Affiche le message aussi sur notre page
-                $('#message').val('').focus(); // Vide la zone de Chat et remet le focus dessus
-                return false; // Permet de bloquer l'envoi "classique" du formulaire
-            });
-			
-			function createMessage(pseudo, message) {
-				if(document.getElementById(pseudo))
-				{
-					insereMessage(pseudo, message);
-				}
-				else{
-					newMessage(pseudo, message);
-				}
-            }
-			function newMessage(pseudo, message) {
-				$('#zone_chat').prepend('<div id='+pseudo+' style="background-color: blue; display: none; width: 100%; height: 100%;"></div>');
-				$('#zone_2').prepend('<div id='+pseudo+' class="conv" style="position: relative; margin-left: 0; border: 1px solid black; width: 100%; height: 25%; background-color:red;">'+pseudo+'</div>');
-				insereMessage(pseudo, message);
-				updateConvers();
-			}
-            // Ajoute un message dans la page
-            function insereMessage(pseudo, message) {
-				$('#'+pseudo).prepend('<p><strong>' + pseudo + '</strong> ' + message + '</p>');
-            }
-			
-			function updateConvers(){
-				var convers = document.getElementsByClassName("conv");
-				
-				for (var i=0; i < convers.length; i++) {
-				  convers[i].onclick = function(){
-				   if(document.getElementById($(this).attr('id')).style.display != 'none')
-					  document.getElementById($(this).attr('id')).style.display = 'none';
-				   else
-					  document.getElementById($(this).attr('id')).style.display = 'block';
-				  }
-				}
-			}
-			
-        </script>
-  <!-- FIN -->
   <script>
     $(document).ready(function() {
       $("[data-toggle]").click(function() {
