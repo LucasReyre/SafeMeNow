@@ -2,8 +2,6 @@
 
 ini_set("display_errors",1);
 require 'Slim/Slim.php';
-require 'confi.php';
-
 
 \Slim\Slim::registerAutoloader();
 $app = new \Slim\Slim();
@@ -25,7 +23,6 @@ $app->put('/users/bind', 'bindUser');
 $app->run();
 
 function getUser($id, $token) {
-
     $sql_query = "SELECT user_id, user_nom, user_prenom, user_photo FROM user where user_id=:id and user_token=:token";
 
     try {
@@ -40,7 +37,6 @@ function getUser($id, $token) {
     catch(PDOException $e) {
         echo '{"error":{"text":'. $e->getMessage() .'}}';
     }
-
 }
 
 function getUserStatus($id){
@@ -156,7 +152,6 @@ function addEvent(){
 }
 
 function updateStatus(){
-
   global $app;
     $req = $app->request();
     $paramId = $req->params('id');
@@ -244,7 +239,6 @@ function getConnection() {
 	    try {
 	        $db_username = "root";
 	        $db_password = "";
-	        $conn = new PDO('mysql:host=localhost;dbname=savemenow', $db_username, $db_password); // to modify Dim
 	        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 	    } catch(PDOException $e) {
