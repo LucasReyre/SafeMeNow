@@ -35,6 +35,7 @@ class MarkerPlacer
               latLng: [x.lat, x.lng]
               options:
                   icon: "./img/injured.png"
+                  clickable: false
               tag: "injured"
               events:
                   click: (marker, events, context) ->
@@ -50,6 +51,7 @@ class MarkerPlacer
                 latLng: [x.lat, x.lng]
                 options:
                     icon: "./img/unsafe.png"
+                    clickable: false
                 tag: "unsafe"
                 events:
                     click: (marker, events, context) ->
