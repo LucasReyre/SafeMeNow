@@ -41,7 +41,7 @@
           <span class="bar"></span>
           <span class="bar"></span>
         </a>
-        <h3 id="AppName">SafeMeNow</h3>
+        <h3 id="AppName">SaveMeNow</h3>
       </div>
       <div class="content">
         <div id="map"></div>
@@ -87,19 +87,23 @@
         shelterStrubs = [
           {
             "lat": "48.890401000000004",
-            "lng": "2.169281"
+            "lng": "2.169281",
+            "addr": "Chez Michel"
           },
           {
             "lat": "48.890401000000004",
-            "lng": "2.1782809999999997"
+            "lng": "2.1782809999999997",
+            "addr": "Chez Bao"
           },
           {
             "lat": "48.895801000000006",
-            "lng": "2.1782809999999997"
+            "lng": "2.1782809999999997",
+            "addr": "Chez Jordan"
           },
           {
             "lat": "48.895801000000006",
-            "lng": "2.169281"
+            "lng": "2.169281",
+            "addr": "Chez Lucas"
           }]
         injuredStrubs = [ {
             "lat": "48.90120100000001",
@@ -139,6 +143,9 @@
             injured: injuredStrubs,
             unsafe: unsafeStrubs
           })
+        $(".welcome-choice").show();
+        $("#map").addClass("blurified");
+
       });
     };
   </script>
