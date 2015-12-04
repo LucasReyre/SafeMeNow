@@ -26,7 +26,7 @@
   <div class="welcome-choice">
       <div class="block"></div>
       <div class="choice">
-        <div class="ImSafe choiceBlock">
+        <div class="ImSafe choiceBlock" >
           <img src="./img/safeBig.png"></img>
           <span>Je suis en sécurité</span>
         </div>
@@ -93,6 +93,20 @@
       $(".close-welcome-choise").click(function() {
         $(".welcome-choice").hide();
         $(".container").removeClass("blur");
+      });
+
+// TODO: Remplacer l'url
+      $(".ImSafe").click(function() {
+        var info = [];
+        info["idUser"]
+        $.ajax({
+         type: "POST",
+         data: {data:info},
+         url: "index.php",
+         success: function(msg){
+           console.log(msg);
+         }
+        });
       });
 
     });
