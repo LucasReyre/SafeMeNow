@@ -16,8 +16,10 @@ require 'shelter.php';
 $app = new \Slim\Slim();
 
 // Get
+
 $app->get('/user/:id', 'getUser');
 $app->get('/user/status/:status', 'getUserStatus');
+$app->get('/shelters', 'getShelters');
 $app->get('/shelter/:id', 'getShelter');
 
 // Post
@@ -34,13 +36,60 @@ function getConnection() {
     try {
         $db_username = "root";
         $db_password = "";
-        $conn = new PDO('mysql:host=localhost;dbname=savemenow', $db_username, $db_password);
+        $conn = new PDO('mysql:host=localhost;dbname=savemenow', $db_username, $db_password); // to modify Dim
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        
+
     } catch(PDOException $e) {
         echo 'ERROR: ' . $e->getMessage();
     }
     return $conn;
+}
+
+function getShelters() {
+    $sql_query = "SELECT * from abri";
+    try {
+        $dbCon = getConnection();
+        $stmt   = $dbCon->query($sql_query);
+        $users  = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $dbCon = null;
+        echo '{"shelter": ' . json_encode($users, JSON_UNESCAPED_UNICODE) . '}';
+    }
+    catch(PDOException $e) {
+        echo '{"error":{"text":'. $e->getMessage() .'}}';
+    }
+
+}
+
+function getShelter($id){
+  $sql = "SELECT * from abri WHERE abri_id=:idS";
+  try {
+      $dbCon = getConnection();
+      $stmt = $dbCon->prepare($sql);
+      $stmt->bindParam("idS", $id);
+      $stmt->execute();
+      $shelter = $stmt->fetchObject();
+      $dbCon = null;
+      echo json_encode($shelter, JSON_UNESCAPED_UNICODE);
+
+  } catch(PDOException $e) {
+      echo '{"error":{"text":'. $e->getMessage() .'}}';
+  }
+}
+
+function getUser($login) {
+    $sql = "SELECT * FROM utilisateur WHERE utilisateur_login=:login";
+    try {
+        $dbCon = getConnection();
+        $stmt = $dbCon->prepare($sql);
+        $stmt->bindParam("login", $login);
+        $stmt->execute();
+        $user = $stmt->fetchObject();
+        $dbCon = null;
+        echo json_encode($user, JSON_UNESCAPED_UNICODE);
+
+    } catch(PDOException $e) {
+        echo '{"error":{"text":'. $e->getMessage() .'}}';
+    }
 }
 
 function addShelters(){
@@ -68,7 +117,7 @@ function addShelters(){
 		    $stmt->bindParam("user_id", $paramIdUser);
 		    $stmt->execute();
 		}catch(PDOException $e) {
-	        echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	        echo '{"error":{"text":'. $e->getMessage() .'}}';
 	    }
 	    $dbCon = null;
 	}
@@ -87,7 +136,7 @@ function addEvent(){
 	if(true){
 		$sql_event = "INSERT INTO event ('event_id','event_epicentre_latitude','event_epicentre_longitude',
 			'event_rayon','event_valide','event_description','event_statut','event_gravite')
-							VALUES (:event_id, :event_epicentre_latitude, :event_epicentre_longitude, :event_rayon, 
+							VALUES (:event_id, :event_epicentre_latitude, :event_epicentre_longitude, :event_rayon,
 								:event_valide, :event_description, :event_statut,:event_gravite)";
 		try{
 			$dbCon = getConnection();
@@ -102,11 +151,11 @@ function addEvent(){
 		    $stmt->bindParam("event_gravite", $paramShelterAdress);
 		    $stmt->execute();
 		}catch(PDOException $e) {
-	        echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	        echo '{"error":{"text":'. $e->getMessage() .'}}';
 	    }
 	    $dbCon = null;
 	}
 }
 
-?>
 
+?>
