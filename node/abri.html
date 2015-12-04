@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.css">
+<link rel="stylesheet" type="text/css" href="css/form.css">
+<link rel="stylesheet" type="text/css" href="css/general.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+//Requète pour place auto complete
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA4HPE3t2-mtHsLIoqdfi6O_4yLkUoGklM&libraries=places&callback=initAutocomplete"
+     async defer></script>
+<script>
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
+
+function showPosition(position) {
+    x.innerHTML = "Latitude: " + position.coords.latitude +
+    "<br>Longitude: " + position.coords.longitude;
+}
+
+function initAutocomplete() {
+
+  // Create the search box and link it to the UI element.
+  var input = document.getElementById('adresse');
+  var searchBox = new google.maps.places.SearchBox(input);
+
+  // [START region_getplaces]
+  // Listen for the event fired when the user selects a prediction and retrieve
+  // more details for that place.
+  searchBox.addListener('places_changed', function() {
+    var places = searchBox.getPlaces();
+
+    if (places.length == 0) {
+      return;
+    }
+  });
+  // [END region_getplaces]
+}
+
+function submit(){
+  var adresse = $( "#adresse" ).val();
+  var placesDispo = $( "#placesDispo" ).val();
+  var autre = $( "#autres" ).val();
+  var error = 0;
+
+  if (adresse == "") {
+     document.getElementById("divAdresse").className = "control-group error";
+     error+=1;
+  }else {
+    document.getElementById("divVille").className = "";
+  }
+
+  if (error>0) {
+    return
+  }
+
+  info = [];
+  info["adresse"]=adresse;
+  info["placesDispo"]=placesDispo;
+  info["autres"]=autres;
+
+  $.ajax({
+   type: "POST",
+   data: {data:info},
+   url: "index.php",
+   success: function(msg){
+     console.log(msg);
+   }
+  });
+
+}
+
+
+</script>
+</head>
+
+
+<body>
+
+  <div id="header">
+    <a href="#" data-toggle=".container" id="sidebar-toggle">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </a>
+    <h3 id="AppName">SafeMeNow</h3>
+  </div>
+
+  <div class="row show-grid" id="spanForm">
+
+    <div id="divAdresse" class="">
+          <input class="input-xlarge " id="adresse" type="text" placeholder="Adresse"></div>
+
+
+        <select id="placesDispo">
+          <option value="1">1</option>
+          <option value="2" >2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="5+">5+</option>
+          <option>5</option>
+        </select>
+
+      <textarea placeholder="Détails d'accés " rows="3" id="autres"></textarea>
+
+      <div onclick="getLocation();return false" id="location"></div>
+
+      <button class="btn btn-large btn-primary" id="submit" type="button" onclick="submit();">Valider</button>
+
+  </div>
+
+<p id="demo"></p>
+
+<script>
+var x = document.getElementById("demo");
+
+
+</script>
+
+</body>
+
+</body>
+
+</html>

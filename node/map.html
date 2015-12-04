@@ -1,0 +1,274 @@
+<html>
+
+<head>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+  <meta charset="utf-8">
+
+  <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="css/general.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script>
+    $(document).bind('mobileinit', function() {
+      $.mobile.changePage.defaults.changeHash = false;
+      $.mobile.hashListeningEnabled = false;
+      $.mobile.pushStateEnabled = false;
+    });
+  </script>
+
+  <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+  <script src="http://code.highcharts.com/highcharts.js"></script>
+  <script src="http://code.highcharts.com/modules/exporting.js"></script>
+  <script type="text/javascript" src="js/gmap3.min.js"></script>
+  <script type="text/javascript" src="coffee/js/MarkerPlacer.js"></script>
+  
+  <style>
+            #zone_chat strong {
+                color: white;
+                background-color: black;
+                padding: 2px;
+            }
+    </style>
+</head>
+
+<body>
+	
+	<form action="/" method="post" id="formulaire_chat" style="margin-left: 25%;">
+            <input type="text" name="message" id="message" placeholder="Votre message..." size="50" autofocus />
+			<input type="text" name="pour" id="pour" placeholder="Pour..." size="20" autofocus />
+            <input type="submit" id="envoi_message" value="Envoyer" />
+        </form>
+
+        <section id="zone_chat" style="margin-left: 25%; height: 100%;">
+            
+        </section>
+		
+		<section id="zone_2" style="position: absolute; top: 0px; left: 0px; width: 25%; height: 100vh; background-color: yellow;">
+            
+        </section>
+
+
+  <div class="welcome-choice">
+      <div class="block"></div>
+      <div class="choice">
+        <div class="ImSafe choiceBlock">
+          <img src="./img/safeBig.png"></img>
+          <span>Je suis en sécurité</span>
+        </div>
+        <div class="ImUnSafe choiceBlock">
+            <img src="./img/unsafeBig.png"></img>
+            <span>J'ai besoin d'un abri</span>
+        </div>
+        <div class="ImInjured choiceBlock">
+            <img src="./img/injuredBig.png"></img>
+            <span>Ma vie est en danger</span>
+        </div>
+        <div class="addShelter choiceBlock">
+          <img src="./img/shelterBig.png"></img>
+          <span>J'ai un abri à proposer</span>
+        </div>
+        <span class="close-welcome-choise">x</span>
+      </div>
+  </div>
+  <div class="container blur">
+    <div id="sidebar">
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Explore</a></li>
+        <li><a href="#">Users</a></li>
+        <li><a href="#">Sign Out</a></li>
+      </ul>
+    </div>
+    <div class="main-content">
+      <div id="header">
+        <div class="swipe-area"></div>
+        <a href="#" data-toggle=".container" id="sidebar-toggle">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </a>
+        <h3 id="AppName">SaveMeNow</h3>
+      </div>
+      <div class="content">
+        <div id="map"></div>
+      </div>
+    </div>
+  </div>
+  
+  <!--JORDAN-->
+  <script src="/socket.io/socket.io.js"></script>
+        <script>
+
+            // Connexion à socket.io
+            var socket = io.connect('http://localhost:8060');
+
+            // On demande le pseudo, on l'envoie au serveur et on l'affiche dans le titre
+            var pseudo = prompt('Quel est votre pseudo ?');
+            socket.emit('nouveau_client', pseudo);
+            document.title = pseudo + ' - ' + document.title;
+
+            // Quand on reçoit un message, on l'insère dans la page
+            socket.on('message', function(data) {
+				createMessage(data.pseudo, data.message);
+			})
+
+            // Quand un nouveau client se connecte, on affiche l'information
+            socket.on('nouveau_client', function(pseudo) {
+                $('#zone_chat').prepend('<p><em>' + pseudo + ' a rejoint le Chat !</em></p>');
+            })
+
+            // Lorsqu'on envoie le formulaire, on transmet le message et on l'affiche sur la page
+            $('#formulaire_chat').submit(function () {
+                var message = $('#message').val();
+				var pour = $('#pour').val();
+                socket.emit('message', message, pour); // Transmet le message aux autres
+				createMessage(pour, message);
+				//$('#'+pour).prepend('<p><strong></strong> ' + message + '</p>');
+                //insereMessage(pseudo, message); // Affiche le message aussi sur notre page
+                $('#message').val('').focus(); // Vide la zone de Chat et remet le focus dessus
+                return false; // Permet de bloquer l'envoi "classique" du formulaire
+            });
+			
+			function createMessage(pseudo, message) {
+				if(document.getElementById(pseudo))
+				{
+					insereMessage(pseudo, message);
+				}
+				else{
+					newMessage(pseudo, message);
+				}
+            }
+			function newMessage(pseudo, message) {
+				$('#zone_chat').prepend('<div id='+pseudo+' style="background-color: blue; display: none; width: 100%; height: 100%;"></div>');
+				$('#zone_2').prepend('<div id='+pseudo+' class="conv" style="position: relative; margin-left: 0; border: 1px solid black; width: 100%; height: 25%; background-color:red;">'+pseudo+'</div>');
+				insereMessage(pseudo, message);
+				updateConvers();
+			}
+            // Ajoute un message dans la page
+            function insereMessage(pseudo, message) {
+				$('#'+pseudo).prepend('<p><strong>' + pseudo + '</strong> ' + message + '</p>');
+            }
+			
+			function updateConvers(){
+				var convers = document.getElementsByClassName("conv");
+				
+				for (var i=0; i < convers.length; i++) {
+				  convers[i].onclick = function(){
+				   if(document.getElementById($(this).attr('id')).style.display != 'none')
+					  document.getElementById($(this).attr('id')).style.display = 'none';
+				   else
+					  document.getElementById($(this).attr('id')).style.display = 'block';
+				  }
+				}
+			}
+			
+        </script>
+  <!-- FIN -->
+  <script>
+    $(document).ready(function() {
+      $("[data-toggle]").click(function() {
+        var toggle_el = $(this).data("toggle");
+        $(toggle_el).toggleClass("open-sidebar");
+      });
+
+
+      $(".swipe-area").swipe({
+        swipeStatus: function(event, phase, direction, distance, duration, fingers) {
+          if (phase == "move" && direction == "right") {
+            $(".container").addClass("open-sidebar");
+            return false;
+          }
+          if (phase == "move" && direction == "left") {
+            $(".container").removeClass("open-sidebar");
+            return false;
+          }
+        }
+      });
+
+      $(".close-welcome-choise").click(function() {
+        $(".welcome-choice").hide();
+        $(".container").removeClass("blur");
+      });
+
+    });
+
+    function initMap() {
+
+      /*if (!google.maps.Polygon.prototype.getBounds) {
+        google.maps.Polygon.prototype.getBounds = function() {
+          var bounds = new google.maps.LatLngBounds();
+          this.getPath().forEach(function(element, index) {
+            bounds.extend(element)
+          });
+          return bounds;
+        }
+      }*/
+
+      $(function() {
+        markerPlacer = new MarkerPlacer("#map");
+        shelterStrubs = [
+          {
+            "lat": "48.890401000000004",
+            "lng": "2.169281",
+            "addr": "Chez Michel"
+          },
+          {
+            "lat": "48.890401000000004",
+            "lng": "2.1782809999999997",
+            "addr": "Chez Bao"
+          },
+          {
+            "lat": "48.895801000000006",
+            "lng": "2.1782809999999997",
+            "addr": "Chez Jordan"
+          },
+          {
+            "lat": "48.895801000000006",
+            "lng": "2.169281",
+            "addr": "Chez Lucas"
+          }]
+        injuredStrubs = [ {
+            "lat": "48.90120100000001",
+            "lng": "2.1782809999999997"
+          }, {
+            "lat": "48.90120100000001",
+            "lng": "2.169281"
+          }]
+        unsafeStrubs = [ {
+            "lat": "48.890401000000004",
+            "lng": "2.1872809999999996"
+          }, {
+            "lat": "48.895801000000006",
+            "lng": "2.1872809999999996"
+          }, {
+            "lat": "48.895801000000006",
+            "lng": "2.1782809999999997"
+          }, {
+            "lat": "48.895801000000006",
+            "lng": "2.1782809999999997"
+          }, {
+            "lat": "48.895801000000006",
+            "lng": "2.1872809999999996"
+          },{
+            "lat": "48.90120100000001",
+            "lng": "2.1872809999999996"
+          }, {
+            "lat": "48.90120100000001",
+            "lng": "2.1782809999999997"
+          }, {
+            "lat": "48.90120100000001",
+            "lng": "2.1782809999999997"
+          }]
+        markerPlacer.addMarkers(
+          {
+            shelters : shelterStrubs,
+            injured: injuredStrubs,
+            unsafe: unsafeStrubs
+          })
+      });
+    };
+  </script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA4HPE3t2-mtHsLIoqdfi6O_4yLkUoGklM&signed_in=true&callback=initMap"></script>
+  </div>
+</body>
+
+</html>
